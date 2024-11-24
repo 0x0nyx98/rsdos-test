@@ -3,27 +3,35 @@ use core::arch::asm;
 
 #[no_mangle]
 fn main() {
-    //output_character(':');
-    //output_character('3');
-    exit();
+    exit(run());
 }
 
-fn output_character(c: char) {
+fn run() -> u8 {
+    let a = 3;
+    let b = 4;
+
+    output_string("rust on dos$");
+
+    a * b
+}
+
+fn output_string(s: &str) {
     unsafe {
         asm!(
-            "mov ah, 6",
+            "mov ah, 0x09",
             "int 0x21",
-            in("dl") c as u8
+            in("edx") s.as_ptr()
         );
     }
 }
 
 
-fn exit() {
+fn exit(code: u8) {
     unsafe {
         asm!(
-            "mov ah, 0",
-            "int 0x21"
+            "mov ah, 0x4C",
+            "int 0x21",
+            in("al") code
         );
     }
 }
@@ -32,7 +40,8 @@ fn exit() {
 fn panic(_panic: &core::panic::PanicInfo<'_>) -> ! {
     unsafe {
         asm!(
-            "int 0x20"
+            "mov ah, 0x4C",
+            "int 0x21"
         );
     }
     loop {}

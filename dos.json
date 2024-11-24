@@ -18,5 +18,6 @@
   "static-position-independent-executables": false,
   "emit-debug-gdb-scripts": false,
   "disable-redzone": true,
-  "no-default-libraries": true
+  "no-default-libraries": true,
+  "relro-level": "full"
 }
